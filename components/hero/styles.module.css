@@ -1,0 +1,110 @@
+.heroWrapper {
+    height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: var(--clr-secondary);
+    padding-inline: .625rem;
+    padding-block: .625rem 2.5rem;
+    /* border-bottom: 1px solid var(--oak); */
+}
+
+.hero_img {
+    width: 100%;
+    position: relative;
+    aspect-ratio: 2 / 3;
+    border-radius: 25px;
+    padding: 1.25rem;
+    max-height: calc(100vh - 20px);
+}
+
+.header_container__mobile {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at center,
+        rgba(0, 0, 0, 0), 
+        rgba(0, 0, 0, .4) 100%
+    );
+    padding: 1.25rem;
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.header_container__mobile .logo {
+    display: none;
+}
+
+.hero_content {
+    padding-inline: 1.25rem;
+    padding-top: 2.5rem;
+}
+
+@media only screen and (min-width: 500px) {
+    .hero_img  {
+        width: 100%;
+    }
+
+    .header_container__mobile {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-bottom: 80px;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .heroWrapper {
+        display: flex;
+        padding-inline: 1.25rem;
+        padding-block: 1.25rem;
+    }
+
+    .hero_img,
+    .hero_content {
+        height: calc(100% - 40px);
+        height: calc(100vh - 40px);
+        height: calc(100dvh - 40px);
+    }
+
+    .hero_img {
+        width: 45%;
+        /* max-height: calc(100vh - 40px); */
+        aspect-ratio: 1 / 1.375;
+    }
+
+    .hero_content {
+        padding-inline: 40px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 48px;
+    }
+
+    .header_container__mobile {
+        text-align: left;
+        display: block;
+        flex-direction: unset;
+        justify-content: unset;
+        padding-block: 36px;
+        padding-inline: 60px;
+        background: transparent
+    }
+
+    .header_container__mobile .hero_header {
+        display: none;
+    }
+
+    .header_container__mobile .logo {
+        display: unset;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .hero_content {
+        padding-inline: clamp(40px, 6.25vw, 80px);
+    }
+}
