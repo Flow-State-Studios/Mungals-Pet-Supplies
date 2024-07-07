@@ -42,6 +42,10 @@
     padding-top: 2.5rem;
 }
 
+.hero_header {
+    color: white;
+}
+
 @media only screen and (min-width: 500px) {
     .hero_img  {
         width: 100%;

@@ -1,8 +1,11 @@
+import Categories from '@/components/categories/categories';
 import styles from './styles.module.css';
 import HeroSection from "@/components/hero/hero-section";
-import { createClient } from "@/utils/supabase/server";
 import Image from 'next/image';
 import Link from 'next/link';
+import FeaturedProduct from './components/featured-product';
+import { Suspense } from 'react';
+import FeaturedProductLoading from './components/featured-products-loading';
 
 export const header = <>
   Pet Life, <br/> 
@@ -32,6 +35,20 @@ export default async function Index() {
             </div>
 
         </HeroSection>
+
+        <div className={`section`}>
+          <h5 className={`text-center ${styles.statement}`}>
+              We believe that all animals deserve a 
+              <span className={`font-italic font-caps font-accent-secondary`}> QUALITY LIFE </span> 
+              at an<span className={`font-italic font-caps font-accent-secondary`}> AFFORDABLE RATE.</span>
+          </h5>
+
+          <Categories />
+        </div>
+
+        <Suspense fallback={<FeaturedProductLoading />}>
+          <FeaturedProduct />
+        </Suspense>
 
         <Link className={`btn ${styles.shop_fixed}`} href={`/shop`}>Shop Now</Link>
     </div>

@@ -1,0 +1,30 @@
+.categories {
+    --gap: clamp(1.5rem, 4vw, 40px);
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    gap: var(--gap);
+    overflow-x: auto;
+    padding-inline: var(--padding);
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+}
+
+.category_img {
+    position: relative;
+    width: calc((100vw - (var(--gap)*5) - (var(--padding)*2)) / 6);
+    min-width: 120px;
+    aspect-ratio: 1 / 1;
+    border-radius: 100%;
+    overflow: hidden;
+}
+
+.category p {
+    text-transform: uppercase;
+    font-weight: 600;
+}
