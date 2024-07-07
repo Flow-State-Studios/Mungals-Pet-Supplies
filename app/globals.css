@@ -224,6 +224,7 @@ button:focus, .btn:focus {
   font-size: .75rem;
   text-transform: capitalize;
   font-weight: 400;
+  line-height: 1;
 }
 
 .font-accent-secondary {

@@ -265,7 +265,7 @@ p.product_stock {
     margin-top: 2.5rem;
 }
 
-.actions button {
+.actions > * {
     flex-basis: 50%;
 }
 

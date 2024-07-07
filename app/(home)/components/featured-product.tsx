@@ -25,7 +25,7 @@ const FeaturedProduct = async () => {
     ).eq('is_featured', true).single();
 
     if (!product) throw new Error('No featured Product Found.');
-    
+
     const dollars = (product.variations[0].price_in_cents / 100).toLocaleString("en-US", {style: 'currency', currency:'USD'})
 
     return <form className={`${styles.featured_product}`}>
@@ -108,11 +108,11 @@ const FeaturedProduct = async () => {
             </div> */}
 
             <div className={`${styles.actions}`}>
-                <Link href={`/cart`} className={``}>
+                <Link href={`/cart`} className={`btn`}>
                     Buy Now
                 </Link>
 
-                <button type='submit' className='btn-secondary'>
+                <button type='submit' className='btn btn-secondary'>
                     Add to Cart
                 </button>
             </div>

@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Logo from '../logo';
 import styles from './styles.module.css';
-import { useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import Menu from './menu';
 import Cart from './cart';
 import Link from 'next/link';
@@ -10,6 +10,8 @@ import { usePathname } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 
 const Nav = () => {
+    const [scrollPos, setScrollPos] = useState(window.scrollY);
+    const menuRef = useRef<HTMLElement | null>(null);
     const supabase = createClient();
     const {data: user }: any = supabase.auth.getUser();
 
@@ -17,16 +19,37 @@ const Nav = () => {
     const [cartOpen, setCartOpen] = useState(false);
     const activePath = usePathname();
 
-    return <nav className={`${styles.nav}`}>
+    const handleScroll = () => {
+        setScrollPos(window.scrollY);
+    }
+
+    useEffect(() => {
+        const scrollListener = document.addEventListener('scroll', handleScroll)
+
+        return () => document.removeEventListener('scroll', handleScroll);
+    }, [])
+
+    useEffect(() => {
+        if(scrollPos > 10 && menuRef.current?.classList.contains(`${styles.nav_active}`)) return
+        if(scrollPos === 0) return menuRef.current?.classList.remove(`${styles.nav_active}`)
+        if(scrollPos > 10) return menuRef.current?.classList.add(`${styles.nav_active}`)
+    }, [scrollPos])
+
+    return <nav className={`${styles.nav}`} ref={menuRef} >
         <div className={`${styles.nav_mobile}`}>
+
             <div className={`${styles.icon} ${styles.menu_icon}`} onClick={() => setMenuOpen(prev => !prev)}>
-                <Image src={`/menu.svg`} fill={true} alt={'Shopping Cart Bag'}/>
+                <Image src={`/${scrollPos > 10 ? 'menu-dark.svg' : 'menu.svg'}`} fill={true} alt={'Shopping Cart Bag'}/>
             </div>
-                
-            <Logo styling={`white`}/>
+
+            {
+                scrollPos > 10 
+                ? <Logo styling={''} />
+                : <Logo styling={'white'} />
+            }
             
             <div className={`${styles.icon} ${styles.bag_icon}`} onClick={() => setCartOpen(prev => !prev)}>
-                <Image src={`/bag.svg`} fill={true} alt={'Shopping Cart Bag'}/>
+                <Image src={`/${scrollPos > 10 ? `bag-dark.svg` : `bag.svg`}`} fill={true} alt={'Shopping Cart Bag'}/>
             </div>
 
             <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
