@@ -2,6 +2,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/nav/nav";
 import { Viewport } from "next";
+import ShoppingCart from "./contexts/shopping-cart";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -34,8 +35,10 @@ export default function RootLayout({
     <html lang="en" className={montserrat.className}>
       <body className={``}>
         <main className={``}>
-          <Nav />
-          {children}
+          <ShoppingCart>
+              <Nav />
+              {children}
+          </ShoppingCart>
         </main>
       </body>
     </html>

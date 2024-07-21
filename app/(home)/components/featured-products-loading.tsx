@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { PostgrestSingleResponse } from '@supabase/supabase-js';
 
 
-
 export interface Product {
     id: string,
     created_at: any,

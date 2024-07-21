@@ -6,6 +6,7 @@
   --oak: hsl(35, 35%, 81%);
   --dark-oak: hsl(35, 35%, 75%);
   --light-oak: hsl(40, 23%, 95%);
+  --light-oak-500: hsl(40, 23%, 92%);
   
   --ff-primary: hsl(202, 61%, 15%);
   --ff-secondary: hsla(203, 61%, 15%, 0.7);
@@ -23,6 +24,10 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+*::selection {
+  outline: 1px solid var(--accent-secondary);
 }
 
 h1::selection, h2::selection, 
@@ -69,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: clamp(38.6px, 6vw, 64px);
+  font-size: clamp(38px, 6vw, 64px);
   text-transform: uppercase;
 }
 
@@ -122,6 +127,11 @@ p {
   text-align: center;
 }
 
+.stock {
+  color: var(--accent-secondary);
+  font-weight: 600;
+}
+
 .white {
   color: var(--clr-primary);
 }
@@ -132,15 +142,15 @@ img {
   object-fit: cover;
 }
 
-button, .btn {
+button, .btn,
+input[type='radio']:checked {
+  min-width: fit-content;
   font-size: .875rem;
   font-weight: 700;
   text-transform: uppercase;
   line-height: 1;
   color: var(--ff-primary);
   background-color: var(--accent-clr);
-  /* background-color: var(--oak);
-  background-color: var(--ff-primary); */
   border: none;
   border-radius: var(--border-radius);
   padding-block: 1em;
@@ -148,6 +158,11 @@ button, .btn {
   cursor: pointer;
   outline: none;
   outline-offset: 0px;
+  border: 1px solid transparent;
+}
+
+button.btn:hover, .btn:hover {
+  background-color: hsl(42, 74%, 62%);
 }
 
 button:focus, .btn:focus {
@@ -163,9 +178,46 @@ button:focus, .btn:focus {
   font-size: .625rem;
 }
 
-.btn-secondary {
+.btn-outlined{
   background-color: transparent;
   border: 1px solid var(--ff-primary);
+  border: 1px solid var(--ff-primary);
+}
+
+.btn-secondary {
+  background-color: var(--accent-clr);
+  /* background-color: transparent; */
+  /* border: 1px solid var(--accent-clr); */
+}
+
+.btn_icon {
+  background-color: transparent;
+  width: 2em;
+  height: 2em;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding: .125em; */
+  padding: 0;
+  border-radius: .25em;
+  background-color: transparent;
+}
+
+.btn_icon-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.btn_icon:hover,
+button.btn-outlined:hover {
+  background-color: var(--light-oak);
+}
+
+button:disabled,
+button:hover:disabled {
+  /* background-color: var(--oak); */
+  opacity: .5;
 }
 
 .background_container {
@@ -232,6 +284,74 @@ button:focus, .btn:focus {
   color: var(--accent-secondary);
   font-weight: 500;
 }
+
+input {
+  color: var(--ff-primary);
+  font-size: .875rem;
+  padding-block: .75em;
+  padding-inline: 1em;
+  border-radius: 20em;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+label {
+  position: relative;
+  cursor: pointer;
+}
+
+label:hover input {
+  background-color: var(--light-oak);
+}
+
+input:focus {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: -2px;
+}
+
+.radio_label {
+  color: var(--ff-primary);
+  font-size: .625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1;
+  padding-block: .75em;
+  padding-inline: 2.25em;
+  background-color: transparent;
+  border: 1px solid var(--ff-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.25em;
+  min-width: fit-content;
+  cursor: pointer;
+}
+
+input[type='radio'],
+input[type='radio']:checked {
+  visibility: hidden;
+  position: absolute;
+  inset: 0;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+}
+
+.radio_label:has([type='radio']:checked) {
+  background-color: var(--accent-clr);
+  border: 1px solid transparent;
+}
+
+.radio_label:has([type='radio']):hover {
+  background-color: var(--light-oak);
+}
+.radio_label:has([type='radio']:checked):hover {
+  background-color: hsl(42, 74%, 62%)
+}
+
+
+
 
 @media only screen and (min-width: 800px){
   .section {

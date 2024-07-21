@@ -10,6 +10,7 @@
 
 .nav_active {
     background-color: var(--clr-secondary);
+    background-color: hsl(40, 23%, 95%);
     padding-block: 1rem;
     border-bottom: .75px solid var(--oak);
 }
@@ -44,6 +45,22 @@
     width: 28.6px;
 }
 
+.bag_icon_full {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7.5px;
+    margin-left: 2.5px;
+}
+
+.bag_icon_full h6 {
+    line-height: 1;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
 /* Menu & Cart */
 
 .menu,
@@ -74,7 +91,13 @@
 .menu_header {
     display: flex;
     justify-content: center;
+    align-items: center;
     border-bottom: 1px solid var(--oak);
+}
+
+.menu_header > button,
+.menu_header > p {
+    display: none;
 }
 
 .menu_close {
@@ -110,11 +133,140 @@
     color: var(--accent-secondary);
 }
 
+.cart_list {
+    padding-block: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    height: 70vh;
+    overflow-y: auto;
+}
+
+.cart_item {
+    padding-inline: 1rem;
+    padding-block: .5rem;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+}
+
+.cart_item:hover {
+    background-color: var(--light-oak);
+}
+
+.product_img {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    aspect-ratio: 1 / 1;
+    background: 
+    radial-gradient(
+        circle at center, 
+        hsl(42, 21%, 80%) 0%, 
+        hsl(42, 21%, 85%) 15%, 
+        hsl(42, 21%, 88%) 30%, 
+        #F5F3EF 80%
+    );
+}
+
+.product_details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.product_details p {
+    color: var(--ff-primary);
+    font-weight: 500;
+}
+
+.product_details p:last-of-type {
+    font-weight: 600;
+}
+
+.product_stock_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: .25rem;
+}
+
+.quantity_amnt {
+    width: 80px;
+    font-size: .75rem;
+    font-weight: 700;
+    line-height: 1;
+    padding-block: .625em;
+    padding-inline: 2em;
+    border: 1px solid var(--ff-primary);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.remove {
+    font-size: .625rem;
+    max-width: fit-content;
+    border: 1px solid var(--ff-primary);
+    padding-block: .5em;
+    padding-inline: 1.25em;
+    font-weight: 500;
+    border-radius: 20px;
+}
+
+.remove:hover {
+    background-color: var(--light-oak-500);
+}
+
 @media only screen and (min-width: 800px) {
     .nav {
         width: 100%;
         padding: unset;
         padding-top: 56px;
+    }
+
+    /* .menu {display: none;} */
+
+    .cart {
+        left: 100%;
+        top: 0;
+        width: 350px;
+        /* background-color: hsl(40, 23%, 95%); */
+        border-left: 1px solid var(--oak);
+        z-index: 100;
+    }
+
+    .cart_open {
+        transition: transform 500ms;
+        transform: translateX(-100%);
+    }
+
+    .menu_header {
+        height: 71px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: 1px solid var(--oak);
+    }
+
+    .menu_header > button,
+    .menu_header > p {
+        display: unset;
+    }
+
+    .menu_close {
+        display: none;
+    }
+
+    .checkout_link {
+        bottom: 1.25rem;
     }
 
     .nav_active {
@@ -147,7 +299,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        width: 55%;
+        width: 50%;
         /* padding-right: 40px; */
     }
 
@@ -156,12 +308,12 @@
         height: unset;
         flex-direction: row;
         padding: 0;
-        gap: clamp(2rem, 4.8vw, 3.75rem);
+        gap: clamp(1.5rem, 3vw, 2rem);
     }
     
     .nav_item {
         padding: 0;
-        font-size: 1rem;
+        font-size: clamp(.875rem, 1.75vw, 1rem);
         font-weight: 500;
     }
 
@@ -183,11 +335,17 @@
     .nav_desktop {
         padding-left: clamp(40px, 6.25rem, 80px);
         padding-right: 0;
+        /* padding-inline: 0; */
     }
 
     .nav_container {
-        padding-inline: clamp(40px, 6.25rem, 80px);
-        width: 55%;
+        --padding:  clamp(40px, 6.25rem, 80px);
+        padding-inline: var(--padding);
+        width: calc(55% + (var(--padding)/2));
+    }
+
+    .nav_list {
+        gap: clamp(2rem, 4.8vw, 3.75rem);
     }
 
     .icons {

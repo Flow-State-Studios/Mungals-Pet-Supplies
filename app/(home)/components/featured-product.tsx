@@ -1,8 +1,11 @@
 import { createClient } from '@/utils/supabase/server';
 import styles from '../styles.module.css';
 import Image from 'next/image';
-import Link from 'next/link';
-
+import SizeOptions from '@/components/form/size-options';
+import ColorOptions from '@/components/form/color-options';
+import ChoosenVariation from '@/app/contexts/choosen-variation';
+import ProductInfo from './product-info';
+import AddToCart from '@/components/buttons/add-to-cart';
 
 export interface Product {
     id: string,
@@ -13,110 +16,108 @@ export interface Product {
     thumbnail: string,
     in_stock: number, 
     is_featured: boolean
-}
+} 
 
 const FeaturedProduct = async () => {
     const supabase = createClient();
+    const currentUser = await supabase.auth.getUser();
 
-    const {data: product, error}: any = await supabase.from('products')
-    .select(`
-        id, product_name, description, thumbnail, 
-        variations:product_variations(id, color, size_in_kg, thumbnail, price_in_cents, quantity_in_stock)`
-    ).eq('is_featured', true).single();
+    const {data: product, error}: any = await supabase.from('products').select(`
+            id, product_name, description, thumbnail,
+            sizes:product_sizes(id, size_in_kg),
+            colors:product_colors(id, color),
+            ingredients:product_ingredients(ingredients),
+            variations:product_variations(id, price_in_cents, in_stock, thumbnail, color_id, size_id, discount_price)
+            `
+        ).eq('is_featured', true).limit(1).single();
 
-    if (!product) throw new Error('No featured Product Found.');
+        if (!product) throw new Error('No featured Product Found.');
+    
+    const buyNow = async (formData: FormData) => {
+        'use server'
 
-    const dollars = (product.variations[0].price_in_cents / 100).toLocaleString("en-US", {style: 'currency', currency:'USD'})
+        const quantity = formData.get('quantity')?.valueOf();
+        const size = formData.get('size')?.valueOf();
+        const color =  formData.get('color')?.valueOf();
 
-    return <form className={`${styles.featured_product}`}>
-        <div className={`${styles.product_imgs}`}>
-            <div className={`${styles.img_carousel}`}>
-                <div className={`${styles.product_img} ${styles.img_selection}`}>
-                    <Image src={`${product.thumbnail}`} fill={true} alt={`${product.description}`}/>
+        const order = {
+            customer_id: currentUser.data.user?.id,
+            shipping_address_id: 'deliver_id' || 'store pick-up',
+            payment_option_id: 'payment_option' || 'Cash on Delivery',
+            status: 'Order',
+            orderTotal: ''
+        }
+
+        const orderProduct = {
+            product_id: product.id,
+            size: size,
+            color: color,
+            quantity: quantity,
+            price_in_cents: 8000,
+            discount_price: null,
+        }
+
+        const { error: order_products_error } = await supabase.from('order_products').insert({
+            product_id: product.id,
+            size: size,
+            color: color,
+            quantity: quantity,
+            price_in_cents: 8000,
+        })
+    }
+
+    return <form className={`${styles.featured_product}`} action={buyNow}>
+        <ChoosenVariation product={product}>
+
+            <div className={`${styles.product_imgs}`}>
+                <div className={`${styles.img_carousel}`}>
+                    <div className={`${styles.product_img} ${styles.img_selection}`}>
+                        <Image src={`/purina.png`} fill={true} alt={`${product.description}`}/>
+                    </div>
+                    <div className={`${styles.product_img} ${styles.img_selection}`}>
+                        <Image src={`/purina.png`} fill={true} alt={`${product.description}`}/>
+                    </div>
                 </div>
-                <div className={`${styles.product_img} ${styles.img_selection}`}>
-                    <Image src={`${product.thumbnail}`} fill={true} alt={`${product.description}`}/>
-                </div>
-            </div>
 
-            <div className={`${styles.product_img} ${styles.active_img}`}>
-                <Image src={`${product.thumbnail}`} fill={true} alt={`${product.description}`}/>
-            </div>
-        </div>
-
-        <div className={`${styles.product_info}`}>
-            <h5 className={`${styles.product_title}`}>{product.product_name} ({product.variations[0].size_in_kg}kg)</h5> 
-            <p className={`${styles.product_cost}`}>{dollars} TTD</p>
-            <p className={`p-xsmall ${styles.product_stock}`}>In Stock: {product.variations[0].quantity_in_stock}</p>
-
-            <p className={`${styles.product_description}`}>{product.description}</p>
-            {
-                product.variations[0].size_in_kg != null 
-                ?   <div className={`${styles.options}`}>
-                        <p>Sizes:</p>
-
-                        <div className={`${styles.option_btns}`}>
-                            {
-                                product.variations.map((item: any, idx: number) => {
-                                    if(idx === 0) return <button className={`btn-xs`} key={`${product.id}-${item.id}`}>{item.size_in_kg} kgs</button>
-                                    return <button className={`btn-secondary btn-xs`} key={`${product.id}-${item.id}`}>{item.size_in_kg} kgs</button>
-                                })
-                            }
-                        </div>
-                    </div>
-                : null
-            }
-            {
-                product.variations[0].color != null 
-                ?   <div className={`${styles.options}`}>
-                        <p>Colors:</p>
-
-                        <div className={`${styles.option_btns}`}>
-                            {
-                                product.variations.map((item: any, idx: number) => {
-                                    if(idx === 0) return <button className={`btn-xs`} key={`${product.id}-${item.id}`}>{item.color}</button>
-                                    return <button className={`btn-secondary btn-xs`} key={`${product.id}-${item.id}`}>{item.color}</button>
-                                })
-                            }
-                        </div>
-                    </div>
-                : null
-            }
-            
-            <div className={`${styles.options}`}>
-                <p>Quantity:</p>
-
-                <div className={`${styles.option_btns}`}>
-                    <div className={`${styles.icon}`}>
-                        <Image src={`/minus.svg`} width={14} height={14} alt='Minus'/>
-                    </div>
-
-                    <div className={`${styles.quantity_amnt}`}>
-                        {1}
-                    </div>
-
-                    <div className={`${styles.icon}`}>
-                        <Image src={`/plus.svg`} width={14} height={14} alt='Plus'/>
-                    </div>
+                <div className={`${styles.product_img} ${styles.active_img}`}>
+                    <Image src={`/purina.png`} fill={true} alt={`${product.description}`}/>
                 </div>
             </div>
 
-            {/* <div className={`${styles.options}`}>
-                <p>Ingredients: </p>
+            <div className={`${styles.product_info}`}>
+                <ProductInfo product={product}/>
 
-                <p className={`p-xsmall ${styles.ingredients}`}>Turkey, Chicken, Salmon, Fish Oil, Wheat, Carrots, Peas, Blueberries, Lettuce, Water</p>
-            </div> */}
+                {
+                    product.sizes.length > 0
+                    ?  <SizeOptions product_id={product.id} sizes={product.sizes}/> 
+                    : null
+                }
 
-            <div className={`${styles.actions}`}>
-                <Link href={`/cart`} className={`btn`}>
-                    Buy Now
-                </Link>
+                {
+                    product.colors.length > 0
+                    ?   <ColorOptions product_id={product.id} colors={product.colors} />
+                    : null
+                }
 
-                <button type='submit' className='btn btn-secondary'>
-                    Add to Cart
-                </button>
+                { product.ingredients != null 
+                    ? <div className={`${styles.options}`}>
+                        <p className='p-small'>Ingredients: </p>
+
+                        <p className={`p-xsmall ${styles.ingredients}`}>Turkey, Chicken, Salmon, Fish Oil, Wheat, Carrots, Peas, Blueberries, Lettuce, Water</p>
+                    </div>
+                    : null
+                }
+
+                    <div className={`${styles.actions}`}>
+                        <button type={'submit'} className={`btn btn-secondary`}>
+                            Buy Now
+                        </button>
+
+                       <AddToCart product={product.id} />
+                    </div>  
             </div>
-        </div>
+
+        </ChoosenVariation>
     </form>
 }
 

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import FeaturedProduct from './components/featured-product';
 import { Suspense } from 'react';
 import FeaturedProductLoading from './components/featured-products-loading';
+import { createClient } from '@/utils/supabase/server';
 
 export const header = <>
   Pet Life, <br/> 
@@ -13,6 +14,15 @@ export const header = <>
 </>
 
 export default async function Index() {
+  const supabase = createClient();
+  const {data: user, error: user_error} = await supabase.auth.getUser();
+  console.log(user)
+
+  // if(user == null) {
+  //   console.log(user_error)
+  //   const {data, error} = await supabase.auth.signInAnonymously();
+  //   console.log(data)
+  // }
  
   return (
     <div className={``}>
