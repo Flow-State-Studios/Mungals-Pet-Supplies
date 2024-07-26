@@ -13,9 +13,11 @@ const AddToCart = (product_id: any) => {
         discount_price: choosenVariation.discount_price
     }
 
-    return <button type='button' className='btn btn-outlined' onClick={() => addCartItem(cartItem)}>
-        Add to Cart
-    </button>
+    return <>
+        <button type='button' className='btn btn-outlined' onClick={() => addCartItem(cartItem)}>
+            Add to Cart
+        </button>
+    </>
 }
 
 export default AddToCart;

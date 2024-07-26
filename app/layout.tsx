@@ -3,12 +3,12 @@ import "./globals.css";
 import Nav from "@/components/nav/nav";
 import { Viewport } from "next";
 import ShoppingCart from "./contexts/shopping-cart";
+import Footer from "@/components/footer/footer";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
-
-
+  
 export const viewport: Viewport = {
   // themeColor: `#a05137`
   // themeColor: `hsl(35, 35%, 81%)`
@@ -34,12 +34,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={montserrat.className}>
       <body className={``}>
-        <main className={``}>
-          <ShoppingCart>
-              <Nav />
-              {children}
-          </ShoppingCart>
-        </main>
+        <ShoppingCart>  
+          {children}
+        </ShoppingCart>
+        <Footer />
       </body>
     </html>
   );

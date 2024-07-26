@@ -24,14 +24,15 @@ const FeaturedProduct = async () => {
 
     const {data: product, error}: any = await supabase.from('products').select(`
             id, product_name, description, thumbnail,
-            sizes:product_sizes(id, size_in_kg),
+            sizes(id, size_in_kg),
             colors:product_colors(id, color),
             ingredients:product_ingredients(ingredients),
             variations:product_variations(id, price_in_cents, in_stock, thumbnail, color_id, size_id, discount_price)
             `
         ).eq('is_featured', true).limit(1).single();
 
-        if (!product) throw new Error('No featured Product Found.');
+        if (!product) throw new Error(`No featured Product Found: ${error}`);
+        console.log(product)
     
     const buyNow = async (formData: FormData) => {
         'use server'

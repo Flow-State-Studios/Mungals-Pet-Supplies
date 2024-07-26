@@ -1,5 +1,5 @@
 import HeroSection from "@/components/hero/hero-section"
-import styles from '../../components/hero/styles.module.css';
+import styles from '@/components/hero/styles.module.css';
 
 const About = () => {
     return  (

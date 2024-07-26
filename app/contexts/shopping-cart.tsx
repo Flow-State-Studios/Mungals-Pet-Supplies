@@ -33,7 +33,7 @@ const ShoppingCart = ({children}: {children: ReactNode}) => {
                 variation:product_variations(
                     id, 
                     color:product_colors(color), 
-                    size:product_sizes(size_in_kg),
+                    size:sizes(size_in_kg),
                     price_in_cents,
                     discount_price,
                     in_stock

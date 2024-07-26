@@ -291,6 +291,10 @@
         width: 45%;
     }
 
+    .nav_desktop .logo_dark {
+        opacity: 1;
+    }
+
     .nav_active > .nav_desktop .logo {
         opacity: 1;
     }

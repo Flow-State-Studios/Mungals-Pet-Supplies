@@ -1,4 +1,4 @@
-import styles from '../../components/form/styles.module.css';
+import styles from '@/components/form/styles.module.css';
 import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";

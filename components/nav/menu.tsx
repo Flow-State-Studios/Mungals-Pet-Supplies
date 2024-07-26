@@ -22,9 +22,10 @@ const Menu = ({menuOpen, setMenuOpen}: any) => {
             <li> <Link onClick={() => setMenuOpen(false)} href={`/shop`} className={`${activePath === '/shop' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>Shop</Link></li>
             <li> <Link onClick={() => setMenuOpen(false)} href={`/about`} className={`${activePath === '/about' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>About</Link> </li>
             <li> <Link onClick={() => setMenuOpen(false)} href={`/contact`} className={`${activePath === '/contact' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>Contact</Link> </li>
+            <li> <Link onClick={() => setMenuOpen(false)} href={`/login`} className={`${activePath === '/login' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>Login</Link> </li>
          </ul>
 
-         <button className={`${styles.menu_close}`} onClick={() => setMenuOpen(false)}>
+         <button className={`${styles.menu_close} btn-outlined`} onClick={() => setMenuOpen(false)}>
             Close Menu
         </button>
     </div>

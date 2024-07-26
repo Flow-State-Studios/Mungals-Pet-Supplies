@@ -6,6 +6,12 @@
     gap: var(--gap);
     overflow-x: auto;
     padding-inline: var(--padding);
+    padding-bottom: .5rem;
+}
+
+.categories::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 .category {
@@ -18,13 +24,14 @@
 .category_img {
     position: relative;
     width: calc((100vw - (var(--gap)*5) - (var(--padding)*2)) / 6);
-    min-width: 120px;
+    min-width: 85px;
     aspect-ratio: 1 / 1;
     border-radius: 100%;
     overflow: hidden;
 }
 
 .category p {
+    font-size: clamp(.75rem, 1.5vw, 1rem);
     text-transform: uppercase;
     font-weight: 600;
 }
