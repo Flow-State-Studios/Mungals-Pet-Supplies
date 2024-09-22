@@ -11,12 +11,17 @@ const ChoosenVariation = ({product, children}: {product: any, children: ReactNod
 
     useEffect(() => {
         product.variations.forEach((variation: any) => {
+            console.log(variation.color_id)
             if(variation.color_id === color && variation.size_id === size) return setChoosenVariation(variation)
         })
     }, [size, color])
 
     return (
         <variationContext.Provider value={{choosenVariation, setChoosenVariation, setSize, setColor, quantity, setQuantity}}>
+            <input type={'text'} hidden={true} name="quantity" defaultValue={quantity}/>
+            <input type={'text'} hidden={true} name="product_id" defaultValue={product.id}/>
+            <input type={'text'} hidden={true} name="variation_id" defaultValue={choosenVariation.id}/>
+            <input type={'text'} hidden={true} name="variation_unit_price" defaultValue={choosenVariation.discount_price ? choosenVariation.discount_price : choosenVariation.price_in_cents}/>
             { children }
         </variationContext.Provider>
     )

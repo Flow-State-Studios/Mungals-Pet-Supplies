@@ -1,16 +1,25 @@
 'use client';
 import Link from 'next/link';
 import styles from './styles.module.css';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
+import Image from 'next/image';
 
-const Menu = ({menuOpen, setMenuOpen}: any) => {
+const Menu = ({menuOpen, setMenuOpen, user}: any) => {
    const activePath = usePathname();
-
+   const supabase = createClient()
+   const router = useRouter();
    // const navigatePath = (e: any, path: string) => {
    //    e.preventDefault();
 
    //    setMenuOpen(false)
    // }
+
+   const Logout = async () => {
+      setMenuOpen(false)
+      await supabase.auth.signOut();
+      router.push('/login')
+   }
 
     return <div className={`${styles.menu} ${menuOpen ? `${styles.menu_open}` : ''}`}>
          <header className={`${styles.menu_header}`}>
@@ -22,12 +31,27 @@ const Menu = ({menuOpen, setMenuOpen}: any) => {
             <li> <Link onClick={() => setMenuOpen(false)} href={`/shop`} className={`${activePath === '/shop' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>Shop</Link></li>
             <li> <Link onClick={() => setMenuOpen(false)} href={`/about`} className={`${activePath === '/about' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>About</Link> </li>
             <li> <Link onClick={() => setMenuOpen(false)} href={`/contact`} className={`${activePath === '/contact' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>Contact</Link> </li>
-            <li> <Link onClick={() => setMenuOpen(false)} href={`/login`} className={`${activePath === '/login' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>Login</Link> </li>
+            {
+               user 
+               ? <li className={`${styles.nav_item}`} onClick={() => Logout()}>Logout</li>
+               : <li> <Link onClick={() => setMenuOpen(false)} href={`/login`} className={`${activePath === '/login' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>Login</Link> </li>
+            }
          </ul>
 
-         <button className={`${styles.menu_close} btn-outlined`} onClick={() => setMenuOpen(false)}>
-            Close Menu
-        </button>
+         <div className={`${styles.menu_close}`}>
+            <button className={`btn-outlined`} onClick={() => setMenuOpen(false)}>
+               Close Menu
+            </button>
+            { user != null
+               ?  <div className={`${styles.icon} ${styles.profile_icon}`}>
+                     <Link href={'/profile'}>
+                        <Image src={'/paw.svg'} alt={`Paw print profile picture`} width={32} height={32}/>
+                     </Link>
+                  </div>
+               : null
+            }
+         </div>
+         
     </div>
 }
 

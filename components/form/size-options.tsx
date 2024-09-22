@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import styles from './styles.module.css';
 import { variationContext } from '@/app/contexts/choosen-variation';
 
-
 const SizeOptions = ({product_id, sizes}: {product_id: string, sizes: any[]}) => {
 
     const {choosenVariation: variation, setSize} = useContext(variationContext);

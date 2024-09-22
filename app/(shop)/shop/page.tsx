@@ -14,22 +14,23 @@ const Shop = async ({searchParams}: {searchParams: {page?: string, animal?: stri
     let query = supabase.from('product_variations').select(`
         id, price_in_cents, discount_price, thumbnail,
         size:sizes(size_in_kg),
-        color:product_colors(color),
+        color:product_variations_color_id_fkey(*),
         product:products!inner(
             id, product_name,
             thumbnail, animals!inner(name), 
             category:categories!inner(title)
         )
     `)
-    if (animal) { query = query.eq('product.animals.name', animal) }
-    if (subCategory) { query = query.eq('product.categories.title', subCategory) }
 
+    if (animal) { query = query.eq('product.animals.name', animal) };
+    if (subCategory) { query = query.eq('product.categories.title', subCategory) };
+    
     query = query.limit(20);
 
     const {data: products, error} = await query;
 
     if (products == null && error) console.log(error)
-
+        
     return (
         <div className={`${styles.shop}`}>
 
@@ -73,9 +74,7 @@ const Shop = async ({searchParams}: {searchParams: {page?: string, animal?: stri
                             : <ProductList>
                                 { 
                                     products?.map((item, idx) => {
-                                    return <>
-                                    <ProductCard item={item} key={`${item.id}-${idx}-1`}/>
-                                    </>
+                                        return <ProductCard item={item} key={`${item.id}-${idx}-1`}/>
                                     })
                                 }
                         </ProductList> 

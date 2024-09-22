@@ -1,0 +1,139 @@
+.page_container {
+    width: 100vw;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-block: 120px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.confirmation {
+    width: 80px;
+    height: 80px;
+    position: relative;
+}
+
+.order_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.order {
+    width: 100%;
+    padding-inline: var(--padding);
+    gap: 12px;
+}
+
+.cart_item {
+    width: 100%;
+    padding-inline: 1rem;
+    padding-block: .5rem;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    border-radius: 5px;
+}
+
+.cart_item:hover {
+    background-color: var(--light-oak);
+}
+
+.product_img {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    aspect-ratio: 1 / 1;
+    background: 
+    radial-gradient(
+        circle at center, 
+        hsl(42, 21%, 80%) 0%, 
+        hsl(42, 21%, 85%) 15%, 
+        hsl(42, 21%, 88%) 30%, 
+        #F5F3EF 80%
+    );
+}
+
+.product_details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.product_details p {
+    color: var(--ff-primary);
+    font-weight: 500;
+}
+
+.product_details p:last-of-type {
+    font-weight: 600;
+}
+
+.product_stock_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: .25rem;
+}
+
+.quantity_amnt {
+    width: 80px;
+    font-size: .75rem;
+    font-weight: 700;
+    line-height: 1;
+    padding-block: .625em;
+    padding-inline: 2em;
+    border: 1px solid var(--ff-primary);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.remove {
+    font-size: .625rem;
+    max-width: fit-content;
+    border: 1px solid var(--ff-primary);
+    padding-block: .5em;
+    padding-inline: 1.25em;
+    font-weight: 500;
+    border-radius: 20px;
+}
+
+.remove:hover {
+    background-color: var(--light-oak-500);
+}
+
+@media only screen and (min-width: 680px){
+    .page_container {
+        padding-block: 200px 60px;
+    }
+
+    .order {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+    }
+}
+
+@media only screen and (min-width: 1000px){
+    .order {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}

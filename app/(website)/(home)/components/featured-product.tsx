@@ -6,120 +6,123 @@ import ColorOptions from '@/components/form/color-options';
 import ChoosenVariation from '@/app/contexts/choosen-variation';
 import ProductInfo from './product-info';
 import AddToCart from '@/components/buttons/add-to-cart';
+import { buyNow } from '@/actions';
+import ProductFeatured from '@/components/product/product-featured';
 
-export interface Product {
-    id: string,
-    created_at: any,
-    product_name: string,
-    price_in_cents: number,
-    description: string,
-    thumbnail: string,
-    in_stock: number, 
-    is_featured: boolean
-} 
-
-const FeaturedProduct = async () => {
+// export interface Product {
+//     id: string,
+//     created_at: any,
+//     product_name: string,
+//     price_in_cents: number,
+//     description: string,
+//     thumbnail: string,
+//     in_stock: number, 
+//     is_featured: boolean
+// } 
+ 
+const FeaturedProduct = async ({size, color}: {size: string | null, color: string | null}) => {
     const supabase = createClient();
-    const currentUser = await supabase.auth.getUser();
 
-    const {data: product, error}: any = await supabase.from('products').select(`
-            id, product_name, description, thumbnail,
-            sizes(id, size_in_kg),
-            colors:product_colors(id, color),
-            ingredients:product_ingredients(ingredients),
-            variations:product_variations(id, price_in_cents, in_stock, thumbnail, color_id, size_id, discount_price)
-            `
-        ).eq('is_featured', true).limit(1).single();
+    // const {data: product, error}: any = await supabase.from('products').select(`
+    //         id, product_name, description, thumbnail,
+    //         sizes(id, size_in_kg),
+    //         colors(id, color),
+    //         ingredients:product_ingredients(ingredients),
+    //         variations:product_variations(
+    //             id, price_in_cents, 
+    //             in_stock, thumbnail, 
+    //             color_id, size_id, discount_price,
+    //             available_colors:product_variation_available_colors_product_variation_id_fkey(colors(*))
+    //         )
+    //         `
+    //     ).eq('is_featured', true).limit(1).single();
 
-        if (!product) throw new Error(`No featured Product Found: ${error}`);
-        console.log(product)
-    
-    const buyNow = async (formData: FormData) => {
-        'use server'
+    //     if (!product) console.log(error)
 
-        const quantity = formData.get('quantity')?.valueOf();
-        const size = formData.get('size')?.valueOf();
-        const color =  formData.get('color')?.valueOf();
-
-        const order = {
-            customer_id: currentUser.data.user?.id,
-            shipping_address_id: 'deliver_id' || 'store pick-up',
-            payment_option_id: 'payment_option' || 'Cash on Delivery',
-            status: 'Order',
-            orderTotal: ''
-        }
-
-        const orderProduct = {
-            product_id: product.id,
-            size: size,
-            color: color,
-            quantity: quantity,
-            price_in_cents: 8000,
-            discount_price: null,
-        }
-
-        const { error: order_products_error } = await supabase.from('order_products').insert({
-            product_id: product.id,
-            size: size,
-            color: color,
-            quantity: quantity,
-            price_in_cents: 8000,
-        })
+    let query = supabase.from('product_variations').select(`
+        id, product_id, in_stock, price_in_cents, discount_price, 
+        thumbnail,
+        size:sizes!inner(*),
+        color:product_variations_color_id_fkey(*),
+        available_colors:product_variation_available_colors_product_variation_id_fkey(colors(*)),
+        product_info:products!inner(
+            id, product_name, animal_id,
+            thumbnail, category_id, description,
+            is_featured, 
+            sizes(*), 
+            colors(*), 
+            ingredients:product_ingredients(ingredients)
+        )
+    `).eq('products.is_featured', true)
+        console.log(size)
+    if(size != null) {
+        query = query.eq(`size.size_in_kg`, size)
     }
 
-    return <form className={`${styles.featured_product}`} action={buyNow}>
-        <ChoosenVariation product={product}>
+    if(color !== null) { 
+        query = query.eq('product_variations_color_id_fkey.color', color)
+    }
 
-            <div className={`${styles.product_imgs}`}>
-                <div className={`${styles.img_carousel}`}>
-                    <div className={`${styles.product_img} ${styles.img_selection}`}>
-                        <Image src={`/purina.png`} fill={true} alt={`${product.description}`}/>
-                    </div>
-                    <div className={`${styles.product_img} ${styles.img_selection}`}>
-                        <Image src={`/purina.png`} fill={true} alt={`${product.description}`}/>
-                    </div>
-                </div>
+    const { data: product, error} = await query.limit(1).single();
+    
+    if(error) console.log(error)
 
-                <div className={`${styles.product_img} ${styles.active_img}`}>
-                    <Image src={`/purina.png`} fill={true} alt={`${product.description}`}/>
-                </div>
-            </div>
+    return (
+        <div className={`${styles.product_page}`} id='featured'>
+            <ProductFeatured product={product} />
+        </div>
+    )
 
-            <div className={`${styles.product_info}`}>
-                <ProductInfo product={product}/>
+    // return <form className={`${styles.featured_product}`} >
+        
+    //     <ChoosenVariation product={product}>
 
-                {
-                    product.sizes.length > 0
-                    ?  <SizeOptions product_id={product.id} sizes={product.sizes}/> 
-                    : null
-                }
+    //         <div className={`${styles.product_imgs}`}>
+    //             <div className={`${styles.img_carousel}`}>
+    //                 <div className={`${styles.product_img} ${styles.img_selection}`}>
+    //                     <Image src={`/purina.png`} fill={true} alt={`${product.description}`}/>
+    //                 </div>
+    //                 <div className={`${styles.product_img} ${styles.img_selection}`}>
+    //                     <Image src={`/purina.png`} fill={true} alt={`${product.description}`}/>
+    //                 </div>
+    //             </div>
 
-                {
-                    product.colors.length > 0
-                    ?   <ColorOptions product_id={product.id} colors={product.colors} />
-                    : null
-                }
+    //             <div className={`${styles.product_img} ${styles.active_img}`}>
+    //                 <Image src={`/purina.png`} fill={true} alt={`${product.description}`}/>
+    //             </div>
+    //         </div>
 
-                { product.ingredients != null 
-                    ? <div className={`${styles.options}`}>
-                        <p className='p-small'>Ingredients: </p>
+    //         <div className={`${styles.product_info}`}>
+    //             <ProductInfo product={product}/>
 
-                        <p className={`p-xsmall ${styles.ingredients}`}>Turkey, Chicken, Salmon, Fish Oil, Wheat, Carrots, Peas, Blueberries, Lettuce, Water</p>
-                    </div>
-                    : null
-                }
+    //             {
+    //                 product.sizes.length > 0
+    //                 ?  <SizeOptions product_id={product.id} sizes={product.sizes}/> 
+    //                 : null
+    //             }
 
-                    <div className={`${styles.actions}`}>
-                        <button type={'submit'} className={`btn btn-secondary`}>
-                            Buy Now
-                        </button>
+    //             <ColorOptions product_id={product.id} />  
 
-                       <AddToCart product={product.id} />
-                    </div>  
-            </div>
+    //             { product.ingredients != null 
+    //                 ? <div className={`${styles.options}`}>
+    //                     <p className='p-small'>Ingredients: </p>
 
-        </ChoosenVariation>
-    </form>
+    //                     <p className={`p-xsmall ${styles.ingredients}`}>{product.ingredients[0].ingredients}</p>
+    //                 </div>
+    //                 : null
+    //             }
+
+    //                 <div className={`${styles.actions}`}>
+    //                     <button type={'submit'} className={`btn btn-secondary`} formAction={buyNow}>
+    //                         Buy Now
+    //                     </button>
+
+    //                    <AddToCart product={product.id} />
+    //                 </div>  
+    //         </div>
+
+    //     </ChoosenVariation>
+    // </form>
 }
 
 

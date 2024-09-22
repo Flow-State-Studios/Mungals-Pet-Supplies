@@ -2,10 +2,11 @@
 import Image from 'next/image';
 import styles from './styles.module.css';
 import { useVariationContext } from '@/app/contexts/choosen-variation';
+import { useState } from 'react';
 
-const Quantity = ({maxQuantity}: {maxQuantity: number}) => {
+const ProductQuantity = ({maxQuantity}: {maxQuantity: number}) => {
 
-    const {quantity, setQuantity} = useVariationContext();
+    const [quantity, setQuantity] = useState(1);
 
     const addQuantity = () => {
         if(quantity === maxQuantity) return
@@ -29,11 +30,11 @@ const Quantity = ({maxQuantity}: {maxQuantity: number}) => {
                 </button>
 
                 <input 
-                    type='text' name={'quantity'} 
-                    maxLength={3} value={quantity} 
+                    type='number' name={'quantity'} 
+                    maxLength={3} max={maxQuantity} value={quantity} 
                     className={`${styles.quantity_amnt}`}
-                    onChange={() => {}}
-                    disabled={true}
+                    onChange={(e) => setQuantity(parseInt(e.target.value))}
+                    // disabled={true}
                 />
 
                 <button type={`button`} className={`btn_icon`} disabled={quantity === maxQuantity ? true : false}  onClick={() => addQuantity()}>
@@ -42,12 +43,9 @@ const Quantity = ({maxQuantity}: {maxQuantity: number}) => {
                     </div>
                 </button>
 
-                {/* <div className={`${styles.icon}`} onClick={() => addQuantity()}>
-                    <Image src={`/plus.svg`} width={14} height={14} alt='Plus Icon'/>
-                </div> */}
             </div>
         </div>
     )
 }
 
-export default Quantity;
+export default ProductQuantity;

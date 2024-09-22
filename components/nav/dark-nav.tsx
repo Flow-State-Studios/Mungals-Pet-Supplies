@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Logo from '../logo';
 import styles from './styles.module.css';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Menu from './menu';
 import Cart from './cart';
 import Link from 'next/link';
@@ -12,7 +12,9 @@ import { User } from '@supabase/supabase-js';
 import { useCartContext } from '@/app/contexts/shopping-cart';
 
 const DarkNav = () => {
+    const supabase = createClient();
     const [scrollPos, setScrollPos] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState<User | null>(null);
     const menuRef = useRef<HTMLElement | null>(null);
    
@@ -26,15 +28,23 @@ const DarkNav = () => {
         setScrollPos(window.scrollY);
     }
 
-    useEffect(() => {
-       async () => {
-            const supabase = createClient();
-            const {data: user, error}: any = await supabase.auth.getUser();
-            if(error) return console.log(error)
-        }
-        
+    const getUser = useCallback(async () => {
+        const {data: user, error}: any = await supabase.auth.getUser();
+        setIsLoading(false)
+
+        if(error) return console.log(error)
+    
         setUser(user)
     }, [])
+
+    const logout = async () => {
+        await supabase.auth.signOut();
+        setUser(null)
+    }
+
+    useEffect(() => {
+       getUser();
+    }, [getUser])
 
     useEffect(() => {
         const scrollListener = document.addEventListener('scroll', handleScroll)
@@ -66,7 +76,7 @@ const DarkNav = () => {
                 <Image src={`/bag-dark.svg`} fill={true} alt={'Shopping Cart Bag'}/>
             </div>
 
-            <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+            <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} user={user}/>
         </div>
  
         <div className={`${styles.nav_desktop}`}>
@@ -85,7 +95,6 @@ const DarkNav = () => {
                             About
                         </Link> 
                     </li>
-
                     <li> 
                         <Link onClick={() => setMenuOpen(false)} href={`/contact`} className={`${activePath === '/contact' ? `${styles.active_path}` : ''} ${styles.nav_item}`}>
                             Contact
@@ -94,22 +103,31 @@ const DarkNav = () => {
                 </ul>
 
                 <div className={`${styles.icons}`}>
-                    <div className={`${styles.icon} ${styles.bag_icon}`}>
-                        {
-                            shoppingCart.items?.length > 0
-                            ? <div className={`${styles.bag_icon_full}`}><h6 className='font-accent-secondary'>{shoppingCart.items?.length}</h6></div>
-                            : null
-                        }
-        
-                        <Image src={`/bag-dark.svg`} fill={true} alt='Shopping cart logo' onClick={() => setCartOpen(prev => !prev)}/>
-                    </div>
-                    {
-                        user == null 
-                        ?   <Link href={`/login`} className='btn btn-sm'>Login</Link>
-                        : <div className={`${styles.icon} ${styles.profile_icon}`}>
-                        
+                    <div className={`${styles.icons}`}>
+                        <div className={`${styles.icon} ${styles.bag_icon}`}>
+                            {
+                                shoppingCart.items?.length > 0
+                                ? <div className={`${styles.bag_icon_full}`}><h6 className='font-accent-secondary'>{shoppingCart.items?.length}</h6></div>
+                                : null
+                            }
+            
+                            <Image src={`/bag-dark.svg`} fill={true} alt='Shopping cart logo' onClick={() => setCartOpen(prev => !prev)}/>
                         </div>
-                    }
+
+                        {
+                            isLoading === true ? null : user
+                            ?  <div className={`${styles.icon} ${styles.profile_icon}`}>
+                                    <Image src={'/paw.svg'} alt={`Paw print profile picture`} width={32} height={32}/>
+                                    <div className={`${styles.profile_menu_container}`}>  
+                                        <div className={`${styles.profile_menu}`}>
+                                            <Link href={`/profile`} className={`${styles.profile_menu_option}`}>My Profile</Link>
+                                            <div className={`${styles.profile_menu_option}`} onClick={() => logout()}>Logout</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            : <Link href={`/login`} className='btn btn-sm'>Login</Link>
+                        }
+                    </div>
                 </div>
             </ul> 
         </div>

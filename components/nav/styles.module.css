@@ -104,7 +104,20 @@
     position: absolute;
     bottom: 1.25rem;
     width: calc(100% - 1.25rem*2);
-    left: 1.25rem;
+    left: 1.25rem; 
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu_close > button {
+    flex-basis:auto;
+    flex-grow: 1;
+}
+
+.menu_close > .profile_icon {
+   width: 36px;
+   height: 36px;
 }
 
 .checkout_link {
@@ -127,6 +140,7 @@
 .nav_item {
     font-size: 1.5rem;
     font-weight: 700;
+    cursor: pointer;
 }
 
 .active_path {
@@ -328,9 +342,43 @@
     }
 
     .profile_icon {
+        position: relative;
         aspect-ratio: 1 / 1;
         background-color: var(--ff-primary);
         border-radius: 100%;
+    }
+
+    .profile_menu_container {
+        position: absolute;
+        right: 0;
+        top: calc(100%);
+        padding-top: .625rem;
+        width: 120px;
+        display: none;
+    }
+
+    .profile_menu {
+        background-color: var(--clr-secondary);
+        border: 1px solid var(--oak);
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .profile_icon:hover .profile_menu_container {
+        display: unset;
+    }
+
+    .profile_menu_option {
+        font-size: .75rem;
+        font-weight: 600;
+        /* text-align: right; */
+        color: var(--ff-primary);
+        padding: .75rem;
+    }
+
+    .profile_menu_option:hover {
+        background-color: var(--light-oak-500);
     }
 }
 

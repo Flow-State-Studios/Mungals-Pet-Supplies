@@ -14,7 +14,7 @@ const ShopByCategories = () => {
                 <button className={``} onClick={() => setIsOpen((prev: boolean) => !prev)}>
                     Explore Categories
                 </button>
-
+        
             </div>
 
             <div className={`${styles.store_categories} ${isOpen ? `${styles.store_categories_open}` : ``}`}>

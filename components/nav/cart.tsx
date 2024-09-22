@@ -3,11 +3,10 @@ import Link from 'next/link';
 import styles from './styles.module.css';
 import Image from 'next/image';
 import { useCartContext } from '@/app/contexts/shopping-cart';
-import Quantity from '../form/quantity';
 
 const Cart = ({cartOpen, setCartOpen}: any) => {
 
-    const { shoppingCart, updateQuantity, removeCartItem} = useCartContext();
+    const { shoppingCart, addQuantity, subtractQuantity, removeCartItem} = useCartContext();
 
     return <div className={`${styles.cart} ${cartOpen ? `${styles.cart_open}` : ''}`}>
          <header className={`${styles.menu_header}`}>
@@ -18,7 +17,7 @@ const Cart = ({cartOpen, setCartOpen}: any) => {
             </button>
             <h4 className={`${styles.header}`}>Shopping Cart</h4>
             
-            {/* <p className='p-xsmall font-accent-secondary'>Total: ${shoppingCart.subtotal}.00</p> */}
+            {/* <p className='p-xsmall font-accent-secondary'>Total: ${shoppingCart.subtotal/100}.00</p> */}
          </header>
         
         <ul className={`${styles.cart_list}`}>
@@ -39,13 +38,13 @@ const Cart = ({cartOpen, setCartOpen}: any) => {
                                 <span className={`p-xsmall stock`}>{item.variation.in_stock} in stock</span>
 
                                 <div className={`${styles.actions}`}>
-                                    <button className='btn_icon btn_icon-sm'>
+                                    <button className='btn_icon btn_icon-sm' onClick={() => subtractQuantity(item.id, item.quantity, item.variation.price_in_cents, item.variation.discount_price)}>
                                         <div>
                                             <Image src={`/minus.svg`} fill={true} alt='minus sign'/>  
                                         </div>
                                     </button>
                                     <p className={`${styles.quantity_amnt}`}>{item.quantity}</p>
-                                    <button className='btn_icon btn_icon-sm'>
+                                    <button className='btn_icon btn_icon-sm' onClick={() => addQuantity(item.id, item.quantity, item.variation.price_in_cents, item.variation.discount_price)}>
                                         <div>
                                             <Image src={`/plus.svg`} fill={true} alt='plus sign'/>  
                                         </div>
@@ -53,14 +52,14 @@ const Cart = ({cartOpen, setCartOpen}: any) => {
                                 </div>
                             </div>
 
-                            <p className={`${styles.remove}`} onClick={() => removeCartItem(item.id)}>remove item</p>
+                            <p className={`${styles.remove}`} onClick={() => removeCartItem(item.id, )}>remove item</p>
                         </div>
                     </li>
                 })
             }
         </ul>
         
-         <Link href={'/'} className={`btn ${styles.checkout_link}`} onClick={() => setCartOpen((prev: boolean) => !prev)}>
+         <Link href={'/checkout'} className={`btn ${styles.checkout_link}`} onClick={() => setCartOpen((prev: boolean) => !prev)}>
             Continue to Checkout
         </Link>
 

@@ -1,31 +1,23 @@
-import Categories from '@/components/categories/categories';
 import styles from './styles.module.css';
+import Categories from '@/components/categories/categories';
 import HeroSection from "@/components/hero/hero-section";
 import Image from 'next/image';
 import Link from 'next/link';
 import FeaturedProduct from './components/featured-product';
 import { Suspense } from 'react';
 import FeaturedProductLoading from './components/featured-products-loading';
-import { createClient } from '@/utils/supabase/server';
 
 export const header = <>
   Pet Life, <br/> 
   But <span className={`font-accent font-italic`}>Elevated.</span> 
 </>
-
-export default async function Index() {
-  const supabase = createClient();
-  const {data: user, error: user_error} = await supabase.auth.getUser();
-  console.log(user)
-
-  // if(user == null) {
-  //   console.log(user_error)
-  //   const {data, error} = await supabase.auth.signInAnonymously();
-  //   console.log(data)
-  // }
+ 
+export default async function Index({searchParams}: {searchParams: {size: string, color: string}}) {
+  const size = searchParams.size || null;
+  const color = searchParams.color || null;
  
   return (
-    <div className={``}>
+    <div className={`${styles.home_page}`}>
         <HeroSection img={`/dog-green`} header={header}>
           <div className={`${styles.paws}`}>
             <Image src={`/paws.svg`} width={284.41} height={684.19} alt={'Paw prints across the page'}/>
@@ -55,9 +47,9 @@ export default async function Index() {
 
           <Categories />
         </div>
-
+     
         <Suspense fallback={<FeaturedProductLoading />}>
-          <FeaturedProduct />
+          <FeaturedProduct size={size} color={color}/>
         </Suspense>
 
         <Link className={`btn ${styles.shop_fixed}`} href={`/shop`}>Shop Now</Link>

@@ -21,7 +21,7 @@ const Categories = () => {
                 <p className='p-small'>Dog Toys</p>
             </Link>
 
-            <Link href={`/sho?panimal=cat&subcategory=food`} className={`${styles.category}`}>
+            <Link href={`/shop?animal=cat&subcategory=food`} className={`${styles.category}`}>
                 <div className={`${styles.category_img}`}>
                     <Image src={'/cat-green.jpg'} fill={true} sizes='(max-width: 800px) 200px, 100%' alt='Cat food.'/>
                 </div>

@@ -5,11 +5,16 @@ import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import HeroSection from "@/components/hero/hero-section";
 
-export default function Login({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
+export default async function Login({searchParams,}: {searchParams: { message: string };}) {
+
+  const supabase = createClient();
+
+  const {data: { user }} = await supabase.auth.getUser();
+
+  if (user) {
+    return redirect("/");
+  }
+
   const signIn = async (formData: FormData) => {
     "use server";
 
@@ -26,7 +31,7 @@ export default function Login({
       return redirect("/login?message=Could not authenticate user");
     }
 
-    return redirect("/protected");
+    return redirect("/shop");
   };
 
   const signUp = async (formData: FormData) => {

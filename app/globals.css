@@ -52,6 +52,10 @@ html, body {
   overscroll-behavior: none;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--clr-primary);
   font-size: 16px;
@@ -78,6 +82,10 @@ h1 {
   text-transform: uppercase;
 }
 
+h2 {
+  font-size: clamp(24px, 6vw, 48px);
+}
+
 h5 {
   font-size: clamp(1.125rem, 2.4vw, 1.5rem);
   font-weight: 400;
@@ -86,9 +94,9 @@ h5 {
 
 h6 {
   font-size: .875rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--accent-secondary);
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 p {
@@ -161,6 +169,18 @@ input[type='radio']:checked {
   border: 1px solid transparent;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
 button.btn:hover, .btn:hover {
   background-color: hsl(42, 74%, 62%);
 }
@@ -198,20 +218,27 @@ button:focus, .btn:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* padding: .125em; */
+  padding: .125em;
   padding: 0;
   border-radius: .25em;
   background-color: transparent;
 }
 
 .btn_icon-sm {
-  width: 1rem;
-  height: 1rem;
+  width: 1.5em;
+  height: 1.5em;
+  aspect-ratio: 1 / 1;
+}
+
+.btn_icon-sm > div {
+  position: relative;
+  width: 14px;
+  height: 14px;
 }
 
 .btn_icon:hover,
 button.btn-outlined:hover {
-  background-color: var(--light-oak);
+  background-color: var(--light-oak-500);
 }
 
 button:disabled,

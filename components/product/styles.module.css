@@ -1,0 +1,239 @@
+/* featured products */
+
+.featured_product {
+    background-color: var(--clr-secondary);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-right: calc(var(--padding));
+    z-index: 100000;
+}
+
+.product_imgs {
+    display: flex;
+    gap: 10px;
+    flex-basis: 55%;
+}
+
+.img_carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 15%;
+    min-width: 80px;
+    max-width: 100px;
+}
+
+.img_selection {
+    position: relative;
+    border-radius: 10px;
+}
+
+.product_img {
+    width: 100%;
+    position: relative;
+    background: 
+        radial-gradient(
+            circle at center, 
+            hsl(42, 21%, 80%) 0%, 
+            hsl(42, 21%, 85%) 15%, 
+            hsl(42, 21%, 88%) 30%, 
+            #F5F3EF 80%
+    );
+    overflow: hidden;
+    aspect-ratio: 1 / 1.125;
+}
+
+.active_img {
+    border-radius: 20px;
+}
+
+.active_img img,
+.img_selection img {
+    margin: 0 auto;
+}
+
+.active_img img {
+    padding: 1.5rem;
+}
+
+.img_selection img {
+    padding: .5rem;
+}
+
+.product_info {
+    width: 100%;
+    margin: 0 auto;
+    flex-basis: 45%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product_info p {
+    color: var(--ff-primary);
+}
+
+.product_title {
+    font-weight: 600;
+    margin-bottom: .625rem;
+}
+
+.product_costs {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.product_cost,
+.product_discount_cost {
+    letter-spacing: .2px;
+}
+
+.product_cost {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.product_cost_strikethrough {
+    font-size: .875rem;
+    text-decoration: line-through;
+    letter-spacing: .5px;
+}
+
+.product_discount_cost {
+    color: var(--ff-primary);
+}
+
+p.product_stock {
+    font-weight: 600;
+    color: var(--accent-secondary);
+}
+
+.product_description {
+    font-size: 1rem;
+    font-weight: 400;
+    text-indent: 0ch;
+    margin-block: 2rem;
+}
+
+.product_loading {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.load_bar {
+    position: relative;
+    width: 100%;
+    height: 3px;
+    background-color: var(--light-oak);
+    /* background: linear-gradient(
+        90deg,
+        var(--oak) 0%,
+        var(--light-oak) 0%,
+        var(--light-oak) 100%
+    ); */
+    margin-bottom: 40px;
+    overflow: hidden;
+}
+
+.load_bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--oak);
+    transform: translateX(-100%);
+    animation: load forwards 2000ms ease-in-out;
+}
+
+@keyframes load {
+    to {
+        transform: translateX(0);
+    }
+}
+
+.load_qoute {
+    width: 75%;
+    color: var(--ff-primary);
+    font-weight: 400;
+    text-align: center;
+}
+ 
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--oak);
+    border-bottom: 1px solid var(--oak);
+    padding-block: .625rem;
+}
+ 
+.options:not(.options:first-of-type) {
+    border-top: 1px solid transparent;
+}
+
+.option_btns {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.quantity_amnt {
+    width: 80px;
+    font-size: .75rem;
+    font-weight: 700;
+    line-height: 1;
+    padding-block: .75em;
+    padding-inline: 2.25em;
+    border: 1px solid var(--ff-primary);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.ingredients {
+    width: 60%;
+    text-align: left;
+}
+
+.actions {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+}
+
+.actions > * {
+    flex-basis: 50%;
+}
+
+@media only screen and (min-width: 800px) {
+    .featured_product {
+        flex-direction: row;
+        gap: var(--padding);
+    }
+
+    .active_img img {
+        padding: 3.25rem;
+    }
+    
+    .actions {
+        margin-top: 5rem;
+    }
+}

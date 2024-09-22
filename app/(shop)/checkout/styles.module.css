@@ -1,0 +1,186 @@
+.checkout_layout {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    display: grid;
+    /* grid-template-columns: 1fr;
+    grid-template-rows: 1fr min-content;
+    grid-template-areas: 
+        'list'
+        'total'
+    ; */
+    /* padding-top: 110px; */
+    gap: .625rem;
+    background-color: var(--clr-secondary);
+}
+
+.checkout_header {
+    padding-inline: var(--padding);
+    margin-bottom: 1.25rem;
+}
+
+.checkout_items_total,
+.checkout_items_list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.checkout_items_total {
+    width: 100%;
+    grid-area: total;
+    border-top: 1px solid var(--oak);
+    padding-block: .625rem 1.25rem;
+    gap: .625rem;
+    padding-inline: var(--padding);
+    position: fixed;
+    bottom: 0; 
+    z-index: 1;
+    background-color: var(--clr-secondary);
+}
+
+.cart_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart_info > p:last-of-type {
+    font-weight: 600;
+}
+
+.checkout_items_list {
+    gap: .5rem;
+}
+
+.empty_cart {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.checkout {
+    height: 100vh;
+    height: 100dvh;
+    /* background-color: var(--clr-secondary); */
+}
+
+/* Duplicate Product CSS - Make into own component */
+
+.cart_item {
+    padding-inline: 1rem;
+    padding-block: .5rem;
+    cursor: pointer;
+    display: flex;
+    gap: 1rem;
+    border-radius: 5px;
+}
+
+.cart_item:hover {
+    background-color: var(--light-oak);
+}
+
+.product_img {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    aspect-ratio: 1 / 1;
+    background: 
+    radial-gradient(
+        circle at center, 
+        hsl(42, 21%, 80%) 0%, 
+        hsl(42, 21%, 85%) 15%, 
+        hsl(42, 21%, 88%) 30%, 
+        #F5F3EF 80%
+    );
+}
+
+.product_details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.product_details p {
+    color: var(--ff-primary);
+    font-weight: 500;
+}
+
+.product_details p:last-of-type {
+    font-weight: 600;
+}
+
+.product_stock_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: .25rem;
+}
+
+.quantity_amnt {
+    width: 80px;
+    font-size: .75rem;
+    font-weight: 700;
+    line-height: 1;
+    padding-block: .625em;
+    padding-inline: 2em;
+    border: 1px solid var(--ff-primary);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.remove {
+    font-size: .625rem;
+    max-width: fit-content;
+    border: 1px solid var(--ff-primary);
+    padding-block: .5em;
+    padding-inline: 1.25em;
+    font-weight: 500;
+    border-radius: 20px;
+}
+
+.remove:hover {
+    background-color: var(--light-oak-500);
+}
+
+@media only screen and (min-width: 680px){
+    .checkout_layout {
+        grid-template-columns: 1fr minmax(250px, 30%);
+        grid-template-rows: 1fr;
+        grid-template-areas: 'list total';
+        padding-inline: var(--padding);
+        gap: 40px;
+    }
+
+    .checkout_header {
+        padding-inline: 0;
+        margin-bottom: 1.25rem;
+    }
+
+    /* .cart_item {
+        border-bottom: 1px solid var(--oak);
+    } */
+
+    .checkout_items_total {
+        height: calc(100vh - 200px - 16px);
+        padding-inline: 1rem;
+        padding-block: 40px;
+        padding-top: 200px;
+        border-radius: 5px;
+        /* border-left: 1px solid var(--oak); */
+        /* background-color: var(--light-oak); */
+        position: relative;
+        z-index: 1;
+        border-top: none;
+    }
+}

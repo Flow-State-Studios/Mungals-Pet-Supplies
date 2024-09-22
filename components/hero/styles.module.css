@@ -26,6 +26,11 @@
         rgba(0, 0, 0, 0), 
         rgba(0, 0, 0, .4) 100%
     );
+    background: radial-gradient(
+        circle at center,
+        rgba(0, 0, 0, 0), 
+        rgba(0, 0, 0, .4) 100%
+    );
     padding: 1.25rem;
     color: white;
     text-align: center;
