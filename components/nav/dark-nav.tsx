@@ -114,18 +114,17 @@ const DarkNav = () => {
                             <Image src={`/bag-dark.svg`} fill={true} alt='Shopping cart logo' onClick={() => setCartOpen(prev => !prev)}/>
                         </div>
 
-                        {
-                            isLoading === true ? null : user
-                            ?  <div className={`${styles.icon} ${styles.profile_icon}`}>
-                                    <Image src={'/paw.svg'} alt={`Paw print profile picture`} width={32} height={32}/>
-                                    <div className={`${styles.profile_menu_container}`}>  
-                                        <div className={`${styles.profile_menu}`}>
-                                            <Link href={`/profile`} className={`${styles.profile_menu_option}`}>My Profile</Link>
-                                            <div className={`${styles.profile_menu_option}`} onClick={() => logout()}>Logout</div>
-                                        </div>
+                        { isLoading === true ? null : user === null || user.is_anonymous === true
+                            ?  <Link href={`/login`} className='btn btn-sm'>Login</Link>
+                            : <div className={`${styles.icon} ${styles.profile_icon}`}>
+                                <Image src={'/paw.svg'} alt={`Paw print profile picture`} width={32} height={32}/>
+                                <div className={`${styles.profile_menu_container}`}>  
+                                    <div className={`${styles.profile_menu}`}>
+                                        <Link href={`/profile`} className={`${styles.profile_menu_option}`}>My Profile</Link>
+                                        <div className={`${styles.profile_menu_option}`} onClick={() => logout()}>Logout</div>
                                     </div>
                                 </div>
-                            : <Link href={`/login`} className='btn btn-sm'>Login</Link>
+                            </div>
                         }
                     </div>
                 </div>

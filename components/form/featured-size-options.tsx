@@ -3,7 +3,7 @@ import { useSearchParams } from 'next/navigation';
 import styles from './styles.module.css';
 import Link from 'next/link';
 
-const FeaturedSizeOptions = async ({product_id, variation_size, available_sizes}: {product_id: string, variation_size: any, available_sizes: any[]}) => {
+const FeaturedSizeOptions = ({product_id, variation_size, available_sizes}: {product_id: string, variation_size: any, available_sizes: any[]}) => {
 
     const searchParams = useSearchParams();
     const color = searchParams.get('color');

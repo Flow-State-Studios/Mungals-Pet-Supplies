@@ -1,7 +1,7 @@
 'use client';
 import { getUserOrSignInAnon } from "@/actions";
 import { createClient } from "@/utils/supabase/client";
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useCallback, useContext, useEffect, useState } from "react";
 
 export const CartContext = createContext<any>(null);
 
@@ -15,25 +15,14 @@ export interface CartItem {
     price_in_cents: number,
     discount_price: number | null
 }
-
+ 
 const ShoppingCart = ({children}: {children: ReactNode}) => {
     const [shoppingCart, setShoppingCart] = useState<any>({});
-    const [user, setUser] = useState<any>(null);
     const supabase = createClient();
-
-    const getUser = async () => {
-        const {data} = await supabase.auth.getUser();
-        return data;
-    }
-
-    useEffect(() => {
-        getUser();
-        setUser(user)
-    }, []);
 
     const fetchCartData = async () => {
         const {data: {user}, error: user_error} = await supabase.auth.getUser();
-        if(user === null || user_error) return
+        if(!user || user_error) return console.log(user_error)
         
         const {data, error}: any = await supabase.from('shopping_cart').select(`
             *, 
@@ -46,7 +35,7 @@ const ShoppingCart = ({children}: {children: ReactNode}) => {
                 ),
                 variation:product_variations(
                     id, 
-                    color:colors(color), 
+                    color:product_variations_color_id_fkey(color), 
                     size:sizes(size_in_kg),
                     price_in_cents,
                     discount_price,
@@ -58,7 +47,6 @@ const ShoppingCart = ({children}: {children: ReactNode}) => {
     
         if(error) {
             console.log(error.message)
-            // throw new Error(error)
         }
         
         setShoppingCart(data || {items: []})
@@ -84,42 +72,32 @@ const ShoppingCart = ({children}: {children: ReactNode}) => {
             .eq('id', shoppingCart.id)
 
         if(error) console.log(`${error.message}`);
-    }   
-
-    useEffect(() => {
-        updateTotalCost();
-    }, [shoppingCart?.items])
-
+    }  
+  
     //Fetch Cart Items
     useEffect(()=> {
         fetchCartData();
-    }, [user?.id])
+    }, [])
 
-useEffect(() => {
-    if(!shoppingCart.id) return 
+    useEffect(() => {
+        if(!shoppingCart.id) return
 
-    const channel = supabase.channel('realtime-cart').on('postgres_changes', {
-        event: '*', schema: 'public', table: 'shopping_cart_items', filter: `cart_id=eq.${shoppingCart.id}`
-    }, (payload) => {  
-        console.log(payload.eventType) 
-        fetchCartData();
-        // switch(payload.eventType) {
-        //     case 'INSERT':
-        //         fetchCartData()
-        //         break;
-        //     case 'UPDATE':
-        //         fetchCartData()
-        //         break;
-        //     case 'DELETE':
-        //         fetchCartData()
-        //         break;
-        //     default: break;
-        // }
-       
-    }).subscribe()
+        console.log(shoppingCart?.id)
+        // console.log('er')
+        const channel = supabase.channel('realtime-cart').on('postgres_changes', {
+            event: '*', schema: 'public', table: 'shopping_cart_items', filter: `cart_id=eq.${shoppingCart.id}`
+        }, (payload) => {  
+            console.log(payload.eventType) 
+            fetchCartData();
+        }).subscribe()
 
-    return () => {supabase.removeChannel(channel);}
-}, [shoppingCart.id])
+        return () => {supabase.removeChannel(channel)}
+    }, [shoppingCart])
+
+    useEffect(() => {
+        if(!shoppingCart.id) return
+        updateTotalCost();
+    }, [shoppingCart?.items])
  
     const addCartItem = async (cartItem: any) => {
         const user = await getUserOrSignInAnon();

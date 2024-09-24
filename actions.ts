@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "./utils/supabase/server";
 import { ORDER_STATES } from "./types";
 import { headers } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 const is_production = process.env.NODE_ENV === 'production' ? true : false;
 const environment = is_production ? `live` : `sandbox`;
@@ -38,23 +39,10 @@ export const addCartItem = async (formData: FormData) => {
     if(!cart_item.id) {
         const {data: my_cart, error: my_cart_error} = await supabase
         .from('shopping_cart')
-        .select(`*`)
-        .eq('user_id', user?.id).limit(1).single();
+        .select(`*`).eq('user_id', user?.id).limit(1).single();
+        if(my_cart_error) return 'There was an error getting you cart details.'
 
-        if(my_cart_error) {
-            const {data: new_cart, error} = await supabase
-            .from('shopping_cart').insert({})
-            .select().limit(1).single();
-
-            if(error) {
-                console.log(`New Cart Error: ${error}`)
-                return error;
-            }
-            
-            cart_item.id = new_cart.id;
-        } else {
-            cart_item.id = my_cart.id;
-        }
+        cart_item.id = my_cart.id;
     }
 
     const {data, error}: any = await supabase.from('shopping_cart_items')
