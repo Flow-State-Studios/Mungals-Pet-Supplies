@@ -93,7 +93,7 @@ const ShoppingCart = ({children}: {children: ReactNode}) => {
     //Fetch Cart Items
     useEffect(()=> {
         fetchCartData();
-    }, [user.id])
+    }, [user?.id])
 
 useEffect(() => {
     if(!shoppingCart.id) return 
