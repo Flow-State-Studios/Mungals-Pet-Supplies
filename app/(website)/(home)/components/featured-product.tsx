@@ -54,7 +54,7 @@ const FeaturedProduct = async ({size, color}: {size: string | null, color: strin
             ingredients:product_ingredients(ingredients)
         )
     `).eq('products.is_featured', true)
-        console.log(size)
+       
     if(size != null) {
         query = query.eq(`size.size_in_kg`, size)
     }

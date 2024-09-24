@@ -2,8 +2,6 @@ import styles from './styles.module.css';
 import ProductQuantity from '../form/product-quantity';
 
 const ProductInfo = ({product}: any) => {
-    console.log(product)
-
     const price_in_dollars = (product.price_in_cents / 100).toLocaleString("en-US", {style: 'currency', currency:'USD'})
     const discount_price_in_dollars = product.discount_price ? (product.discount_price / 100).toLocaleString("en-US", {style: 'currency', currency:'USD'}) : null
     const variation_size = product.size.id ? product.product_info.sizes.find((size: any) => {

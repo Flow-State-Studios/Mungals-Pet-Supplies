@@ -20,14 +20,14 @@ const ProductColorOptions = ({
                     available_colors.map((color: any, idx: number) => {
                         const {color: color_name, id} = color.colors;
                         const checked = variation_color?.id === id ? true : false;
-                        if(available_colors.length === 1 && checked === false) {router.push(`/shop/${product_id}?size=${size}&color=${color_name}`)}
+                        // if(available_colors.length === 1 && checked === false) {router.push(`/shop/${product_id}?size=${size}&color=${color_name}`)}
 
                         return <Link href={`/shop/${product_id}?size=${size}&color=${color_name}`} key={`${product_id}-${color_name}`}>
                             <label className={`radio_label`} tabIndex={0}>
                                     {color_name}
                                     <input 
                                         type={`radio`} name='color' required
-                                        value={color.id} checked={checked}
+                                        value={color.id} checked={checked} readOnly={true}
                                         key={`${product_id}-${id}`} 
                                     />
                             </label>

@@ -21,6 +21,55 @@ export const getUserOrSignInAnon = async () => {
     }
 } 
 
+export const addCartItem = async (formData: FormData) => {
+    const user = await getUserOrSignInAnon();
+    const supabase = createClient();
+
+    const cart_item = {
+        id: formData.get('cart_id')?.valueOf() || null,
+        variation_id: formData.get('variation_id')?.valueOf(),
+        product_id: formData.get('product_id')?.valueOf(),
+        quantity: parseInt(`${formData.get('quantity')?.valueOf()}`),
+    }
+
+    if(!cart_item.variation_id || !cart_item.product_id) return 'No item found to add to cart';
+    if(!(cart_item.quantity >= 1)) return 'You need to have at least one';
+
+    if(!cart_item.id) {
+        const {data: new_cart, error} = await supabase
+            .from('shopping_cart').insert({})
+            .select().limit(1).single();
+
+        if(error) {
+            console.log(`New Cart Error: ${error}`)
+            return error;
+        }
+
+        cart_item.id = new_cart.id;
+    }
+
+    const {data, error}: any = await supabase.from('shopping_cart_items')
+    .select(`cart_id, variation_id, quantity`)
+    .eq('cart_id', `${cart_item.id}`).eq('variation_id', `${cart_item.variation_id}`)
+    .limit(1).single();
+
+    if (error) {
+        await supabase.from('shopping_cart_items').insert({
+            cart_id: cart_item.id,
+            variation_id: cart_item.variation_id,
+            product_id: cart_item.product_id,
+            quantity: cart_item.quantity,
+        }).select()
+    } else {
+        const new_quantity = parseInt(data.quantity) + cart_item.quantity;
+        console.log(new_quantity)
+
+        await supabase.from('shopping_cart_items').update({
+            quantity: new_quantity,
+        }).eq('cart_id', cart_item.id).eq('variation_id', cart_item.variation_id)
+    }
+}
+
 export const buyNow = async (formData: FormData) => {
     let response: any;
     const supabase = createClient();

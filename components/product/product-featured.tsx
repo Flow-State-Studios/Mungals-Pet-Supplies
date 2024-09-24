@@ -5,6 +5,7 @@ import AddToCart from '@/components/buttons/add-to-cart';
 import { buyNow } from '@/actions';
 import FeaturedSizeOptions from '../form/featured-size-options';
 import FeaturedColorOptions from '../form/featured-color-options';
+import CartId from './cart-id-input';
 
 export interface Product {
     id: string,
@@ -21,6 +22,7 @@ const ProductFeatured = async ({product}: {product: any}) => {
     const base_product = product.product_info;
 
     return <form className={`${styles.featured_product}`}>  
+            <CartId />
             <input type={'text'} hidden={true} name="product_id" defaultValue={base_product.id}/>
             <input type={'text'} hidden={true} name="variation_id" defaultValue={product.id}/>
             <input type={'text'} hidden={true} name="variation_unit_price" defaultValue={product.discount_price ? product.discount_price : product.price_in_cents}/> 
@@ -64,13 +66,13 @@ const ProductFeatured = async ({product}: {product: any}) => {
                     : null
                 }
 
-                    <div className={`${styles.actions}`}>
-                        <button type={'submit'} className={`btn btn-secondary`} formAction={buyNow}>
-                            Buy Now
-                        </button>
+                <div className={`${styles.actions}`}>
+                    <button type={'submit'} className={`btn btn-secondary`} formAction={buyNow}>
+                        Buy Now
+                    </button>
 
-                       {/* <AddToCart product={product.id} /> */}
-                    </div>  
+                    <AddToCart />
+                </div>  
             </div>
     </form>
 }

@@ -1,12 +1,13 @@
 'use client';
 import Link from 'next/link';
 import styles from './styles.module.css';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const FeaturedColorOptions = ({
         product_id, variation_color, available_colors
     }: {product_id: string, variation_color: any, available_colors: any[]}) => {
 
+    const router = useRouter();
     const searchParams = useSearchParams();
     const size = searchParams.get('size');
 
@@ -19,7 +20,7 @@ const FeaturedColorOptions = ({
                     available_colors.map((color: any, idx: number) => {
                         const {color: color_name, id} = color.colors;
                         const checked = variation_color?.id === id ? true : false;
-                        
+                        if(available_colors.length === 1 && checked === false) {router.push(`/?size=${size}&color=${color_name}#featured`)}
                         return <Link href={`/?size=${size}&color=${color_name}#featured`} key={color.id}>
                             <label className={`radio_label`} tabIndex={0}>
                                     {color_name}
