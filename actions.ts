@@ -38,7 +38,8 @@ export const addCartItem = async (formData: FormData) => {
     if(!cart_item.id) {
         const {data: my_cart, error: my_cart_error} = await supabase
         .from('shopping_cart')
-        .select(`*`).eq('user_id', user?.id).limit(1).single();
+        .select(`*`)
+        .eq('user_id', user?.id).limit(1).single();
 
         if(my_cart_error) {
             const {data: new_cart, error} = await supabase
@@ -49,6 +50,7 @@ export const addCartItem = async (formData: FormData) => {
                 console.log(`New Cart Error: ${error}`)
                 return error;
             }
+            
             cart_item.id = new_cart.id;
         } else {
             cart_item.id = my_cart.id;

@@ -28,7 +28,8 @@ const ShoppingCart = ({children}: {children: ReactNode}) => {
 
     useEffect(() => {
         getUser();
-    }, [])
+        setUser(user)
+    }, []);
 
     const fetchCartData = async () => {
         const {data: {user}, error: user_error} = await supabase.auth.getUser();
@@ -92,7 +93,7 @@ const ShoppingCart = ({children}: {children: ReactNode}) => {
     //Fetch Cart Items
     useEffect(()=> {
         fetchCartData();
-    }, [])
+    }, [user.id])
 
 useEffect(() => {
     if(!shoppingCart.id) return 
