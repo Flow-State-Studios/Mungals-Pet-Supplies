@@ -36,16 +36,23 @@ export const addCartItem = async (formData: FormData) => {
     if(!(cart_item.quantity >= 1)) return 'You need to have at least one';
 
     if(!cart_item.id) {
-        const {data: new_cart, error} = await supabase
+        const {data: my_cart, error: my_cart_error} = await supabase
+        .from('shopping_cart')
+        .select(`*`).eq('user_id', user?.id).limit(1).single();
+
+        if(my_cart_error) {
+            const {data: new_cart, error} = await supabase
             .from('shopping_cart').insert({})
             .select().limit(1).single();
 
-        if(error) {
-            console.log(`New Cart Error: ${error}`)
-            return error;
+            if(error) {
+                console.log(`New Cart Error: ${error}`)
+                return error;
+            }
+            cart_item.id = new_cart.id;
+        } else {
+            cart_item.id = my_cart.id;
         }
-
-        cart_item.id = new_cart.id;
     }
 
     const {data, error}: any = await supabase.from('shopping_cart_items')
