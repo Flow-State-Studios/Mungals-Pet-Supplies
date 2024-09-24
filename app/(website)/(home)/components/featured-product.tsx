@@ -1,12 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
 import styles from '../styles.module.css';
-import Image from 'next/image';
-import SizeOptions from '@/components/form/size-options';
-import ColorOptions from '@/components/form/color-options';
-import ChoosenVariation from '@/app/contexts/choosen-variation';
-import ProductInfo from './product-info';
-import AddToCart from '@/components/buttons/add-to-cart';
-import { buyNow } from '@/actions';
 import ProductFeatured from '@/components/product/product-featured';
 
 // export interface Product {
@@ -19,6 +12,8 @@ import ProductFeatured from '@/components/product/product-featured';
 //     in_stock: number, 
 //     is_featured: boolean
 // } 
+
+export const dynamic = 'force-dynamic'; 
  
 const FeaturedProduct = async ({size, color}: {size: string | null, color: string | null}) => {
     const supabase = createClient();

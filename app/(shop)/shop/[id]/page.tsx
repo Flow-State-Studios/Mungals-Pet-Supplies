@@ -2,6 +2,8 @@ import Product from '@/components/product/product';
 import styles from '../../styles.module.css';
 import { createClient } from '@/utils/supabase/server';
 
+export const dynamic = 'force-dynamic'; 
+
 const ProductPage = async ({params, searchParams}: {params: {id: string}, searchParams: {size: string, color: string} }) => {
     const id = params.id;
     const size = searchParams.size || null;

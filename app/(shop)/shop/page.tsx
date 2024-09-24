@@ -5,6 +5,8 @@ import ProductList from '@/components/cards/product-list';
 import { createClient } from '@/utils/supabase/server';
 import ShopByCategories from '../components/shop-by-category';
 
+export const dynamic = 'force-dynamic'; 
+
 const Shop = async ({searchParams}: {searchParams: {page?: string, animal?: string, subcategory?: string}}) => {
     const page = searchParams.page || 1;
     const animal = searchParams.animal || null;
