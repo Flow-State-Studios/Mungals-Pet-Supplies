@@ -7,14 +7,15 @@ import FeaturedProduct from './components/featured-product';
 import { Suspense } from 'react';
 import FeaturedProductLoading from './components/featured-products-loading';
 
-export const header = <>
-  Pet Life, <br/> 
-  But <span className={`font-accent font-italic`}>Elevated.</span> 
-</>
  
 export default async function Index({searchParams}: {searchParams: {size: string, color: string}}) {
   const size = searchParams.size || null;
   const color = searchParams.color || null;
+
+  const header = <>
+    Pet Life, <br/> 
+    But <span className={`font-accent font-italic`}>Elevated.</span> 
+  </>
  
   return (
     <div className={`${styles.home_page}`}>
