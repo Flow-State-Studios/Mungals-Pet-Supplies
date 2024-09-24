@@ -20,7 +20,7 @@ export const metadata = {
   description: "Pet Life, But Elevated | Affordable Pet Supplies, Food, Toys, & More!",
 };
 
-export const montserrat = Montserrat({
+const montserrat = Montserrat({
   weight: ['400', '500', '600', '700', '800'],
   style: ['normal', 'italic'],
   subsets: ['latin']

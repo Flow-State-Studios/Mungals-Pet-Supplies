@@ -7,7 +7,7 @@ import FeaturedProduct from './components/featured-product';
 import { Suspense } from 'react';
 import FeaturedProductLoading from './components/featured-products-loading';
 
- 
+
 export default async function Index({searchParams}: {searchParams: {size: string, color: string}}) {
   const size = searchParams.size || null;
   const color = searchParams.color || null;
