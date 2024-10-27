@@ -64,7 +64,7 @@ const Nav = () => {
                 {
                     scrollPos > 10 
                     ?  <Image src={`/menu-dark.svg`} fill={true} alt={'Menu button'}/>
-                    :  <Image src={`/menu.svg`} fill={true} alt={'Menu button'}/>
+                    :  <Image src={`/menu-light.svg`} fill={true} alt={'Menu button'}/>
                 }
             </div>
 
