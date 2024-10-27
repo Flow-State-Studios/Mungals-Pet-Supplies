@@ -12,8 +12,6 @@ import ProductFeatured from '@/components/product/product-featured';
 //     in_stock: number, 
 //     is_featured: boolean
 // } 
-
-export const dynamic = 'force-dynamic'; 
  
 const FeaturedProduct = async ({size, color}: {size: string | null, color: string | null}) => {
     const supabase = createClient();

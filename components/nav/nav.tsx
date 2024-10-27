@@ -61,7 +61,7 @@ const Nav = () => {
         
         <div className={`${styles.nav_mobile}`}>
             <div className={`${styles.icon} ${styles.menu_icon}`} onClick={() => setMenuOpen(prev => !prev)}>
-                <Image src={`/${scrollPos > 10 ? 'menu-dark.svg' : 'menu.svg'}`} fill={true} alt={'Shopping Cart Bag'}/>
+                <Image src={`${scrollPos > 10 ? '/menu-dark.svg' : '/menu.svg'}`} fill={true} alt={'Shopping Cart Bag'}/>
             </div>
 
             {

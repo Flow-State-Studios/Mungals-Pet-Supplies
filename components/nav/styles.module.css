@@ -67,7 +67,7 @@
 .cart {
     position: absolute;
     left: 0;
-    top: -100vh;
+    top: -120vh;
     width: 100vw;
     height: 100%;
     height: 100vh;
@@ -79,7 +79,7 @@
 
 .menu_open, .cart_open {
     transition: transform 500ms;
-    transform: translateY(100vh);
+    transform: translateY(120vh);
 }
 
 .menu_header,
@@ -106,6 +106,7 @@
     width: calc(100% - 1.25rem*2);
     left: 1.25rem; 
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 20px;
 }

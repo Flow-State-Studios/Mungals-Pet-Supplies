@@ -63,7 +63,7 @@ const Cart = ({cartOpen, setCartOpen}: any) => {
             Continue to Checkout
         </Link>
 
-        <button className={`${styles.menu_close} btn-outlined`} onClick={() => setCartOpen((prev: boolean) => !prev)}>
+        <button className={`${styles.menu_close} btn btn-outlined`} onClick={() => setCartOpen((prev: boolean) => !prev)}>
             Close Cart
         </button>
     </div>
