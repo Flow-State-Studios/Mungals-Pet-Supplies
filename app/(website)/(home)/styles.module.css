@@ -1,5 +1,6 @@
 .hero_header {
     display: none;
+    text-wrap: balance;
 }
 
 .benefits {
@@ -285,7 +286,7 @@ p.product_stock {
 
 @media only screen and (min-width: 800px) {
     .hero_header {
-        white-space: nowrap;
+        /* white-space: nowrap; */
         display: unset;
         z-index: 1;
     }

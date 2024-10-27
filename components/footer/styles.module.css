@@ -1,0 +1,38 @@
+.footer {
+    padding-inline: var(--padding);
+    padding-block: .625rem 5rem;
+    color: var(--ff-secondary);
+}
+
+.h1__lg {
+    font-size: 16.5vw;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.footer_ul_list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    gap: var(--padding);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.list_header {
+    font-size: 1.125rem;
+}
+
+.list_item {
+    font-size: .875rem;
+}
+
+@media only screen and (min-width: 680px){
+    .footer_ul_list {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}

@@ -14,8 +14,7 @@ export default async function Index({searchParams}: {searchParams: {size: string
   const color = searchParams.color || null;
 
   const header = <>
-    Pet Life, <br/> 
-    But <span className={`font-accent font-italic`}>Elevated.</span> 
+    <span className={`font-accent font-italic`}>Quality</span> Goods, Happy Pets!
   </>
  
   return (
